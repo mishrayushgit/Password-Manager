@@ -1,20 +1,67 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useRef, useState } from 'react'
 
 const Manager = () => {
+  const [form, setform] = useState({site:"",username:"",password:""})
+  const [passArray, setpassArray] = useState([])
+  useEffect(() => {
+    let passwords = localStorage.getItem("passwords");
+    if(passwords){
+      setpassArray(JSON.parse(passwords))
+    }
+    
+  }, [])
+  
+  const ref = useRef();
+  const savePass = () => { 
+    setpassArray([...passArray,form])
+    localStorage.setItem("passwords",JSON.stringify([...passArray,form]))
+    console.log([...passArray,form])
+   }
+  const handleChange = (e) => { 
+    setform({...form, [e.target.name]:e.target.value})
+   }
+  const showPass = () => { 
+    // alert("showPass")
+    if(ref.current.src.includes("public/hide.svg")){
+      ref.current.src = "public/show.svg"
+    }
+    else{
+      ref.current.src = "public/hide.svg"
+    }
+   }
   return (
-<>
-<div class="absolute top-0 -z-10 h-full w-full bg-white"><div class="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(173,109,244,0.5)] opacity-50 blur-[80px]"></div></div>
-<div className="container mx-auto bg-slate-700">
-     
-<div className='text-white flex flex-col p-4'>
-    <input type="text" />
-    <div className="flex">
-    <input type="text" />
-    <input type="text" />
-    </div>
-    </div>
-</div>
-</>
+    <>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+      <div className=" mycontainer bg-clip-content">
+        <h1 className='text-3xl font-bold text-center'>
+          <span className='text-green-500'>&lt;</span>
+          Pass<span className='text-green-500'>G</span>har
+          <span className='text-green-500'>/&gt;</span></h1>
+        <p className='text-green-500 text-lg text-center'>Home to your Passwords</p>
+        <div className='text-black flex flex-col p-4 gap-6 items-center'>
+          <input value={form.site} onChange={handleChange} placeholder='Enter Website URL' className='rounded-full border border-black  p-4 py-1 w-full' type="text" name='site' />
+          <div className="flex w-full justify-between gap-3">
+
+            <input value={form.username} onChange={handleChange} placeholder='Enter Username' className='rounded-full border border-black p-4 py-1 w-full' type="text" name='username' />
+
+            <div className="relative">
+            <input value={form.password} onChange={handleChange} placeholder='Enter Password' className='rounded-full border border-black  p-4 py-1 w-full' type="text" name='password'/>
+            <span onClick={showPass}  className='absolute right-0.5 top-0.5 cursor-pointer'>
+              <img className='p-1' ref={ref} width={30} src="public/show.svg" alt="" />
+            </span>
+            </div>
+
+          </div>
+            <button onClick={savePass} className='text-black flex justify-center items-center border border-black bg-green-500 hover:bg-green-400 hover:cursor-pointer w-fit rounded-full p-2 px-3'><lord-icon
+              src="https://cdn.lordicon.com/sbnjyzil.json"
+              trigger="hover"
+              stroke="bold"
+              colors="primary:#121331,secondary:#000000">
+            </lord-icon>Add Password</button>
+        </div>
+      </div>
+    </>
   )
 }
 
