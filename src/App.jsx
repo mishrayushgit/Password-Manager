@@ -4,15 +4,21 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Navbar from './components/navbar'
 import Manager from './components/Manager'
+import Footer from './components/Footer'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+    <div className='body'>
       <Navbar/>
-    <Manager/>
-      <div className='text-3xl'>createui</div>
+      <div className='min-h-[83vh]'>
+        <Manager/>
+      </div>
+      <Footer/>
+ 
+    </div>
     </>
   )
 }
