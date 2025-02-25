@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 
 const Manager = () => {
   const [form, setform] = useState({ site: "", username: "", password: "" })
@@ -28,8 +29,8 @@ const Manager = () => {
     navigator.clipboard.writeText(text)
   }
   const savePass = () => {
-    setpassArray([...passArray, form])
-    localStorage.setItem("passwords", JSON.stringify([...passArray, form]))
+    setpassArray([...passArray, {...form,id: uuidv4()}])
+    localStorage.setItem("passwords", JSON.stringify([...passArray, {...form,id: uuidv4()}]))
     console.log([...passArray, form])
   }
   const handleChange = (e) => {
@@ -81,12 +82,12 @@ const Manager = () => {
             </div>
 
           </div>
-          <button onClick={savePass} className='text-black flex justify-center items-center border border-black bg-green-500 hover:bg-green-400 hover:cursor-pointer w-fit rounded-full p-2 px-5'><lord-icon
+          <button onClick={savePass} className='text-black flex justify-center items-center border border-black bg-green-500 hover:bg-green-400 hover:cursor-pointer w-fit rounded-full p-2 px-5 gap-1'><lord-icon
             src="https://cdn.lordicon.com/sbnjyzil.json"
             trigger="hover"
             stroke="bold"
             colors="primary:#121331,secondary:#000000">
-          </lord-icon>Add Password</button>
+          </lord-icon>Save Password</button>
         </div>
         <div className='font-bold text-2xl py-4'>
           Your Passwords
@@ -99,33 +100,37 @@ const Manager = () => {
                 <th className='py-2 border border-white'>Site</th>
                 <th className='py-2 border border-white'>Username</th>
                 <th className='py-2 border border-white'>Password</th>
+                <th className='py-2 border border-white'>Actions</th>
               </tr>
             </thead>
             <tbody className='bg-green-500/20'>
               {passArray.map((item, index) => {
 
                 return <tr key={index}>
-                  <td className='py-2 border border-white gap-1'>
+                  <td className='py-2 border border-white '>
                     <div className='flex items-center justify-center '>
                       <a href={item.site} target='_blank'>{item.site}</a>
                       <div className='size-7 cursor-pointer' onClick={() => { copyText(item.site) }}>
                         <img src="/public/copy.png" alt="" />
                       </div>
                     </div></td>
-                  <td className='text-center  py-2 border border-white gap-1'>
+                  <td className='text-center  py-2 border border-white '>
                     <div className='flex items-center justify-center '>
                       <span>{item.username}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.username) }}>
                         <img src="/public/copy.png" alt="" />
                       </div>
                     </div></td>
-                  <td className='text-center  py-2 border border-white flex items-center justify-center gap-1'>
+                  <td className='py-2 border border-white'>
                     <div className='flex items-center justify-center '>
                       <span>{item.password}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.password) }}>
                         <img src="/public/copy.png" alt="" />
                       </div>
                     </div>
                   </td>
-
+                  <td className='flex items-center justify-center py-2 border gap-1 border-white text-center'>
+                <span className='cursor-pointer'><img src="public/edit.svg" alt="" /></span>
+                <span className='cursor-pointer'><img src="public/delete.svg" alt="" /></span>
+                  </td>
                 </tr>
               })}
             </tbody>
