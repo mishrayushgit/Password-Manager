@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
-
+import Swal from 'sweetalert2'
 const Manager = () => {
   const [form, setform] = useState({ site: "", username: "", password: "" })
   const [passArray, setpassArray] = useState([])
@@ -28,10 +28,38 @@ const Manager = () => {
       });
     navigator.clipboard.writeText(text)
   }
+  const saved = (text) => {
+    toast('Password saved successfully!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+    navigator.clipboard.writeText(text)
+  }
+  const deleted = (text) => {
+    toast('Password deleted successfully!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+    navigator.clipboard.writeText(text)
+  }
   const savePass = () => {
     setpassArray([...passArray, {...form,id: uuidv4()}])
     localStorage.setItem("passwords", JSON.stringify([...passArray, {...form,id: uuidv4()}]))
     console.log([...passArray, form])
+    setform({ site: "", username: "", password: "" })
+    saved()
   }
   const handleChange = (e) => {
     setform({ ...form, [e.target.name]: e.target.value })
@@ -47,6 +75,32 @@ const Manager = () => {
       passref.current.type = "text"
     }
   }
+  const editPass = (id) => { 
+  console.log("editing item with id :",id)
+  setform(passArray.filter(item =>item.id === id)[0])
+  setpassArray(passArray.filter(item =>item.id !== id))
+   }
+  const deletePass = (id) => { 
+  console.log("deleting item with id :",id)
+  setpassArray(passArray.filter(item =>item.id !== id))
+  deleted()
+   }
+
+   const ConfirmDel = (id) => { 
+    
+    Swal.fire({
+      title: "Do you want to delete the password",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletePass(id)
+      }
+    });
+   }
+
   return (
     <>
       <ToastContainer
@@ -62,7 +116,7 @@ const Manager = () => {
         theme="light"
       />
       <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-      <div className=" mycontainer bg-clip-content py-8">
+      <div className="mycontainer bg-clip-content py-8">
         <h1 className='text-3xl font-bold text-center text-gray-800'>
           <span className='text-green-500'>&lt;</span>
           Pass<span className='text-green-500'>G</span>har
@@ -97,39 +151,39 @@ const Manager = () => {
           <table className="table-auto w-full rounded-xl overflow-hidden">
             <thead className='text-white bg-gray-800'>
               <tr >
-                <th className='py-2 border border-white'>Site</th>
-                <th className='py-2 border border-white'>Username</th>
-                <th className='py-2 border border-white'>Password</th>
-                <th className='py-2 border border-white'>Actions</th>
+                <th className='py-2'>Site</th>
+                <th className='py-2'>Username</th>
+                <th className='py-2'>Password</th>
+                <th className='py-2'>Actions</th>
               </tr>
             </thead>
             <tbody className='bg-green-500/20'>
               {passArray.map((item, index) => {
 
                 return <tr key={index}>
-                  <td className='py-2 border border-white '>
+                  <td className='py-2  '>
                     <div className='flex items-center justify-center '>
                       <a href={item.site} target='_blank'>{item.site}</a>
                       <div className='size-7 cursor-pointer' onClick={() => { copyText(item.site) }}>
                         <img src="/public/copy.png" alt="" />
                       </div>
                     </div></td>
-                  <td className='text-center  py-2 border border-white '>
+                  <td className='text-center  py-2 '>
                     <div className='flex items-center justify-center '>
                       <span>{item.username}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.username) }}>
                         <img src="/public/copy.png" alt="" />
                       </div>
                     </div></td>
-                  <td className='py-2 border border-white'>
+                  <td className='py-2'>
                     <div className='flex items-center justify-center '>
                       <span>{item.password}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.password) }}>
                         <img src="/public/copy.png" alt="" />
                       </div>
                     </div>
                   </td>
-                  <td className='flex items-center justify-center py-2 border gap-1 border-white text-center'>
-                <span className='cursor-pointer'><img src="public/edit.svg" alt="" /></span>
-                <span className='cursor-pointer'><img src="public/delete.svg" alt="" /></span>
+                  <td className='flex items-center justify-center py-2 gap-1 text-center'>
+                <span className='cursor-pointer' ><img onClick={() =>editPass(item.id)} src="edit.svg" alt="" /></span>
+                <span className='cursor-pointer' ><img onClick={() =>ConfirmDel(item.id)} src="delete.svg" alt="" /></span>
                   </td>
                 </tr>
               })}
