@@ -1,6 +1,31 @@
 @import "tailwindcss";
 @layer components {
-  .mycontainer {
+  .md\:mycontainer {
       @apply container px-40 py-14 mx-auto;
     }
+
   }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Thin and modern */
+}
+
+/* Track (Background) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Fully transparent */
+  border-radius: 10px;
+}
+
+/* Scrollbar Thumb */
+::-webkit-scrollbar-thumb {
+  background: rgba(31, 41, 55, 0.5); /* Semi-transparent dark gray */
+  border-radius: 10px;
+  backdrop-filter: blur(5px); /* Soft blur for glass effect */
+  transition: background 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(31, 41, 55, 0.8); /* Slightly darker when hovered */
+  backdrop-filter: blur(8px); /* More blur for emphasis */
+}

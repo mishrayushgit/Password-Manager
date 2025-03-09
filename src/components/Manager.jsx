@@ -55,12 +55,33 @@ const Manager = () => {
     navigator.clipboard.writeText(text)
   }
   const savePass = () => {
+    if (form.site.length <= 3 || form.username.length <= 3 || form.password.length <= 3) {
+      Swal.fire({
+        title: "Respective areas should be longer than 3 Letters",
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `
+        }
+      });
+    }
+    else{
     setpassArray([...passArray, {...form,id: uuidv4()}])
     localStorage.setItem("passwords", JSON.stringify([...passArray, {...form,id: uuidv4()}]))
     console.log([...passArray, form])
     setform({ site: "", username: "", password: "" })
     saved()
   }
+}
   const handleChange = (e) => {
     setform({ ...form, [e.target.name]: e.target.value })
   }
@@ -116,7 +137,7 @@ const Manager = () => {
         theme="light"
       />
       <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-      <div className="mycontainer bg-clip-content py-8">
+      <div className="md:mycontainer p-2 md:px-40 md:bg-clip-content md:py-8">
         <h1 className='text-3xl font-bold text-center text-gray-800'>
           <span className='text-green-500'>&lt;</span>
           Pass<span className='text-green-500'>G</span>har
@@ -124,7 +145,7 @@ const Manager = () => {
         <p className='text-green-500 text-lg text-center'>Home to your Passwords</p>
         <div className='text-black flex flex-col p-4 gap-6 items-center'>
           <input value={form.site} onChange={handleChange} placeholder='Enter Website URL' className='rounded-full border border-black  p-4 py-1 w-full' type="text" name='site' />
-          <div className="flex w-full justify-between gap-3">
+          <div className="flex w-full flex-col md:flex-row gap-6 justify-between md:gap-3">
 
             <input value={form.username} onChange={handleChange} placeholder='Enter Username' className='rounded-full border border-black p-4 py-1 w-full' type="text" name='username' />
 
@@ -148,6 +169,7 @@ const Manager = () => {
         </div>
         {passArray.length === 0 && <div>No passwords to show.</div>}
         {passArray.length != 0 &&
+
           <table className="table-auto w-full rounded-xl overflow-hidden">
             <thead className='text-white bg-gray-800'>
               <tr >
@@ -157,7 +179,8 @@ const Manager = () => {
                 <th className='py-2'>Actions</th>
               </tr>
             </thead>
-            <tbody className='bg-green-500/20'>
+
+            <tbody className='bg-green-500/20 '>
               {passArray.map((item, index) => {
 
                 return <tr key={index}>
@@ -188,8 +211,8 @@ const Manager = () => {
                 </tr>
               })}
             </tbody>
-          </table>}
-
+          </table>
+          }
       </div>
     </>
   )
