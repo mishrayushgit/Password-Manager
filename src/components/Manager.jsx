@@ -189,19 +189,19 @@ const Manager = () => {
                     <div className='flex items-center justify-center '>
                       <a href={item.site} target='_blank'>{item.site}</a>
                       <div className='size-7 cursor-pointer' onClick={() => { copyText(item.site) }}>
-                        <img src="/public/copy.png" alt="" />
+                        <img src="/copy.png" alt="" />
                       </div>
                     </div></td>
                   <td className='text-center  py-2 '>
                     <div className='flex items-center justify-center '>
                       <span>{item.username}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.username) }}>
-                        <img src="/public/copy.png" alt="" />
+                        <img src="/copy.png" alt="" />
                       </div>
                     </div></td>
                   <td className='py-2'>
                     <div className='flex items-center justify-center '>
                       <span>{"*".repeat(item.password.length)}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.password) }}>
-                        <img src="/public/copy.png" alt="" />
+                        <img src="/copy.png" alt="" />
                       </div>
                     </div>
                   </td>
