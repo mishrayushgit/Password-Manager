@@ -1,5 +1,7 @@
 import React from 'react'
-
+function redirectToWebsite() {
+  window.location.href = "https://github.com/mishrayushgit/Password-Manager";
+}
 const navbar = () => {
   return (
     <nav className='bg-gray-800 text-white '>
@@ -9,7 +11,7 @@ const navbar = () => {
           Pass<span className='text-green-500'>G</span>har
           <span className='text-green-500'>/&gt;</span>
           </div>
-        <button className='text-white ring-1 ring-white bg-green-500 my-4 rounded-full flex justify-between items-center cursor-pointer'>
+        <button onClick={()=>redirectToWebsite()} className='text-white ring-1 ring-white bg-green-500 my-4 rounded-full flex justify-between items-center cursor-pointer'>
           <img className='invert w-10 p-1' src="/github.svg" alt="" />
           <span className='font-bold px-2'>Github</span>
           </button>

@@ -200,7 +200,7 @@ const Manager = () => {
                     </div></td>
                   <td className='py-2'>
                     <div className='flex items-center justify-center '>
-                      <span>{item.password}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.password) }}>
+                      <span>{"*".repeat(item.password.length)}</span><div className='size-7 cursor-pointer' onClick={() => { copyText(item.password) }}>
                         <img src="/public/copy.png" alt="" />
                       </div>
                     </div>
