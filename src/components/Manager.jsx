@@ -104,6 +104,7 @@ const Manager = () => {
   const deletePass = (id) => { 
   console.log("deleting item with id :",id)
   setpassArray(passArray.filter(item =>item.id !== id))
+  localStorage.setItem("passwords", JSON.stringify(passArray.filter(item=>item.id!==id)))
   deleted()
    }
 
